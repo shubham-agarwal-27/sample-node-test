@@ -7,3 +7,4 @@ npm install tweetsodium
 npm install tweetnacl
 npm install util
 npm install readline
+npm install https-localhost
