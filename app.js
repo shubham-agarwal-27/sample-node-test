@@ -72,5 +72,5 @@ exports.close = function () {
         debug('Server stopped.');
     });
 }
-
+console.log("hi");
 this.listen();
