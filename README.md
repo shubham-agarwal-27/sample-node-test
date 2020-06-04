@@ -171,4 +171,4 @@ build-and-deploy:
 1. Make any text change by editing the node_express/views/index.pug file and commit the change. Browse to the **Actions** tab in GitHub to view the live logs of your Action workflow which got triggered with the push of the commit.
 
 1.  Once the workflow successfully completes execution, browse back to your website to visualise the new chnages you introduced!
-..
+.
