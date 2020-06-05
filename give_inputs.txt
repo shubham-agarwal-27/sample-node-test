@@ -1,2 +1,0 @@
-Github_PAT    :  123$$
-workflow    :  12$$
