@@ -8,6 +8,7 @@ function colorTextLog(text, color) {
 	return `\x1b[${color}m${text}\x1b[0m`; 
 }
 
+
 async function getUserDetails(userDetails){
 	
   	return new Promise(function(resolve){
@@ -33,6 +34,7 @@ async function getUserDetails(userDetails){
   	});
 }
 
+
 function getWorkflows(userDetails){
     var opts = {
         url: 'https://api.github.com/repos/'+userDetails['username']+'/'+userDetails['repo_name']+'/actions/workflows',
@@ -48,7 +50,6 @@ function getWorkflows(userDetails){
         });
     });
 }
-
 function getMyWorkflow(allWorkflowsInRepo){
     var myWorkflow;
     for(var workflow of allWorkflowsInRepo){
@@ -58,7 +59,6 @@ function getMyWorkflow(allWorkflowsInRepo){
     }
     return myWorkflow;
 }
-
 function getURLOfMyWorkflowRun(userDetails, myWorkflow){
     var opts = {
         url: 'https://api.github.com/repos/'+userDetails['username']+'/'+userDetails['repo_name']+'/actions/workflows/'+myWorkflow['id']+'/runs',
@@ -74,6 +74,7 @@ function getURLOfMyWorkflowRun(userDetails, myWorkflow){
         });
     });
 }
+
 
 (async function(){
     var userDetails = {};
