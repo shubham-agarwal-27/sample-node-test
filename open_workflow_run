@@ -42,7 +42,7 @@ function getWorkflows(userDetails){
     };
 
     return new Promise(function(resolve, reject) {
-        request(opts, async function(error, response, body){
+        request(opts, function(error, response, body){
             // console.log(JSON.parse(response['body'])['workflows']);
             resolve(JSON.parse(response['body'])['workflows']);
         });
