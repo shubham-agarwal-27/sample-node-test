@@ -1,47 +1,15 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
 const request = require('request');
 const opn = require('opn');
 const { exec } = require('child_process');
 
-function getFileContent(file_name){
-	return new Promise(resolve => {
-		resolve(fs.readFileSync(file_name, "utf8").split("\n"));
-	});
-}
-
-function getGitHubPAT(userDetails){
-	return new Promise(resolve => {
-		console.log();
-		console.log("Please give your GitHub PAT Token in the file. \nOnce sure, end your token with a $$ to inform that you are done.");
-		opn('give_inputs.txt');
-		var current_line_number = 0;
-		var i = setInterval(async function(){
-			var user_inputs = await getFileContent('give_inputs.txt');
-			if(current_line_number !== 0 || user_inputs == ''){
-				clearInterval(i);
-				resolve();
-			}
-			else{
-				var split_input = user_inputs[current_line_number].replace(/\s+/g, '').split(":");
-				if(!(split_input[1] === '' || split_input[1] === 'NA' || !(split_input[1].endsWith('$$')))){
-					userDetails[split_input[0]] = split_input[1].split('$')[0];
-					current_line_number++;
-				}
-			}
-		}, 3000);
-	});
+function colorTextLog(text, color) { 
+	return `\x1b[${color}m${text}\x1b[0m`; 
 }
 
 async function getUserDetails(userDetails){
-	var file_content = await getFileContent('give_inputs.txt');
-	var split_input = file_content[0].replace(/\s+/g, '').split(":");
-	if(!split_input[1].endsWith('$$'))
-		await getGitHubPAT(userDetails);
-	else
-		userDetails[split_input[0]] = split_input[1].split('$')[0];
-	console.log("Your github Pat token is : " + userDetails['Github_PAT'].slice(0, 4) + '.......');
+	
   	return new Promise(function(resolve){
 		exec('git config --list', (error, stdout, stderr) => {
 			var array_stdout = stdout.split("\n");
@@ -113,5 +81,13 @@ function getURLOfMyWorkflowRun(userDetails, myWorkflow){
     var allWorkflowsInRepo = await getWorkflows(userDetails);
     var myWorkflow = getMyWorkflow(allWorkflowsInRepo);
     var urlOfMyWorkflowRun = await getURLOfMyWorkflowRun(userDetails, myWorkflow);
-    opn(urlOfMyWorkflowRun);
+    console.log();
+    console.log("**************************You can have a look at the workflow run using the below url:**************************");
+    console.log();
+    console.log(colorTextLog(urlOfMyWorkflowRun, 95));
+    console.log();
+    console.log("Opening the link in browser...");
+    setTimeout(function(){
+        opn(urlOfMyWorkflowRun)},
+        1500);
 })();
