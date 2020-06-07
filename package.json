@@ -10,10 +10,13 @@
     "name": "alagrawa"
   },
   "dependencies": {
+    "adal-node": "^0.2.1",
     "applicationinsights": "^1.0.0",
     "azure-graph": "^4.3.0",
     "body-parser": "^1.15.0",
+    "connect-logger": "0.0.1",
     "cookie-parser": "^1.4.0",
+    "cookie-session": "^1.4.0",
     "debug": "^2.2.0",
     "express": "^4.14.0",
     "https-localhost": "^4.5.3",
