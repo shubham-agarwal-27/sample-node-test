@@ -5,6 +5,7 @@
 
 
 /give_inputs.txt
+/loginAzure.js
 # User-specific files
 *.rsuser
 *.suo
