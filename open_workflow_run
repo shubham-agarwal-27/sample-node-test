@@ -82,7 +82,6 @@ function getURLOfMyWorkflowRun(userDetails, myWorkflow){
     var allWorkflowsInRepo = await getWorkflows(userDetails);
     var myWorkflow = getMyWorkflow(allWorkflowsInRepo);
     var urlOfMyWorkflowRun = await getURLOfMyWorkflowRun(userDetails, myWorkflow);
-    urlOfMyWorkflowRun += '?check_suite_focus=true';
     console.log();
     console.log("**************************You can have a look at the workflow run using the below url:**************************");
     console.log();
