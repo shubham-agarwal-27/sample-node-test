@@ -4,7 +4,7 @@ const request = require('request');
 const opn = require('opn');
 const { exec } = require('child_process');
 
-function colorTextLog(text, color) { 
+function textColor(text, color) { 
 	return `\x1b[${color}m${text}\x1b[0m`; 
 }
 
@@ -85,7 +85,7 @@ function getURLOfMyWorkflowRun(userDetails, myWorkflow){
     console.log();
     console.log("**************************You can have a look at the workflow run using the below url:**************************");
     console.log();
-    console.log(colorTextLog(urlOfMyWorkflowRun, 95));
+    console.log(textColor(urlOfMyWorkflowRun, 95));
     console.log();
     console.log("Opening the link in browser...");
     setTimeout(function(){
