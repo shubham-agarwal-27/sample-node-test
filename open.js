@@ -9,9 +9,8 @@
 //     console.log('Success!');
 // }, function(err) {
 //     console.error('Something went wrong: ' + err);
-// });
+// })
 
 
 const launch = require('launch-editor')
-
 launch('workflow.yml');
