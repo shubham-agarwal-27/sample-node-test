@@ -25,10 +25,10 @@ jobs:
         npm run test --if-present
 
 
-    - uses: azure/appservice-settings@v1
-      with:
-        app-name: testnodeappshubham
-        general-settings-json: '{"linuxFxVersion": "NODE|lts"}' #'General configuration settings as Key Value pairs'
+    # - uses: azure/appservice-settings@v1
+    #   with:
+    #     app-name: testnodeappshubham
+    #     general-settings-json: '{"linuxFxVersion": "NODE|lts"}' #'General configuration settings as Key Value pairs'
 
     # deploy web app using publish profile credentials
     - uses: azure/webapps-deploy@v1
