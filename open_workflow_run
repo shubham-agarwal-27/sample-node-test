@@ -53,7 +53,7 @@ function getWorkflows(userDetails){
 function getMyWorkflow(allWorkflowsInRepo){
     var myWorkflow;
     for(var workflow of allWorkflowsInRepo){
-        if(workflow['name'] === '.github/workflows/workflow.yml'){
+        if(workflow['path'] === '.github/workflows/workflow.yml'){
             myWorkflow = workflow;
         }
     }
