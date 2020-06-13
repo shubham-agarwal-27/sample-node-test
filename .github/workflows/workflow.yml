@@ -11,7 +11,11 @@ jobs:
     steps:
     # checkout the repo
     - uses: actions/checkout@master
-
+    
+    - uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
     - uses: actions/setup-node@v1
       with:
         node-version: '10.x'
@@ -29,4 +33,3 @@ jobs:
       with:
         app-name: testnodeappshubham
         package: '.'
-        publish-profile: ${{ secrets.AZURE_CREDENTIALS }}
