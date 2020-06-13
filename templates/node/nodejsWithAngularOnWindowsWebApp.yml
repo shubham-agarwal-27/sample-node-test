@@ -5,7 +5,7 @@
 on:
   push:
     branches:
-      - {{{ sourceRepository.branch }}}
+      - master
 
 name: Build and deploy Node app
 
@@ -22,7 +22,7 @@ jobs:
 
     # install dependencies, build, and test
     - name: npm install, build
-      working-directory: {{{ workingDirectory }}}
+      working-directory: '.'
       run: |
         npm install -g @angular/cli
         npm install
@@ -31,6 +31,6 @@ jobs:
     # deploy web app
     - uses: azure/webapps-deploy@v1
       with:
-        app-name: {{{ targetResource.resource.name }}}
-        package: {{{ workingDirectory }}}
-        publish-profile: {{=<% %>=}}${{ secrets.<% targetResource.serviceConnectionId %> }}<%={{ }}=%>
+        app-name: angularappshubham
+        package: '.'
+        publish-profile: ${{ secrets.AZURE_CREDENTIALS }}
