@@ -5,16 +5,54 @@ const opn = require('open');
 const { exec } = require('child_process');
 const fs = require('fs');
 
+
+/**
+ * Change the color of text
+ * @param  {String}	text 	The text to be colored
+ * @param  {String} color 	The color number
+ * @return {String}       	The colored text
+ */
+function textColor(text, color) { 
+	return `\x1b[${color}m${text}\x1b[0m`; 
+}
+/**
+ * Read the file contents
+ * @param  {String}	file_name 	The name of the file to be read
+ * @return {Promise}			The contents of the given file
+ */
 function getFileContent(file_name){
 	return new Promise(resolve => {
 		resolve(fs.readFileSync(file_name, "utf8").split("\n"));
 	});
 }
-async function getGitHubPAT(){
+/**
+ * Rewrite the file with some content
+ * @param  {String}	file_name 	the name of the file to be rewritten
+ * @param  {String} content		The content to be written
+ * @return {Promise}			Resolves after the contents have been written
+ */
+async function rewriteFile(file_name, content){	
+	return new Promise(resolve => {
+		fs.writeFile(file_name, content, function(err){
+			if(err){
+				console.log(err);
+				exit(1);
+			}
+			resolve();
+		});
+	});
+}
+/**
+ * Get GitHub PAT and account details from user
+ * @param  {String} file_name 			The name of the file to be used for input
+ * @param  {String} original_content 	The content of the initial file that will be replace the file contents if something is messed up 
+ * @return {Promise}					Resolves an object that stored the GitHub PAT and details of user
+ */
+async function getGitHubPAT(file_name, original_content){
 	console.log();
 	console.log("Please give your GitHub PAT Token in the file. \nOnce sure, save the file and proceed.");
 	console.log();
-	await opn('give_inputs.txt', {wait: true});
+	await opn(file_name, {wait: true});
 	return new Promise(async (resolve) => {
 		var user_inputs = await getFileContent('give_inputs.txt');
 		var split_input = user_inputs[0].replace(/\s+/g, '').split(":");
@@ -22,21 +60,28 @@ async function getGitHubPAT(){
 		resolve();
 	});
 }
-
-function textColor(text, color) { 
-	return `\x1b[${color}m${text}\x1b[0m`; 
-}
-
-
-async function getUserDetails(userDetails){
-    
-    var file_content = await getFileContent('give_inputs.txt');
+/**
+ * Get GitHub PAT and Tenant ID from user
+ * @param  {String} file_name 			The name of the file to be used for input
+ * @param  {String} original_content 	The content of the initial file that will be replace the file contents if something is messed up 
+ * @return {Promise}					Resolves an object that stored the GitHub PAT and tenant ID of user
+ */
+async function getUserDetails(file_name, original_content){
+	var userDetails = {}
+	var file_content = await getFileContent(file_name);
 	var split_input = file_content[0].replace(/\s+/g, '').split(":");
-	if(split_input[1] === '' || split_input[1] === 'NA')
-		await getGitHubPAT();
+	if(split_input[1] === '' || split_input[1] === 'NA'){
+		await getGitHubPAT(file_name, userDetails);
+		var file_messed = await checkFileContentMessed(file_name);
+		if(file_messed){
+			await rewriteFile(file_name, original_content);
+			console.log("You have messed up the file. Please re-run the command. Exitting...");
+			process.exit(1);
+		}
+	}
 	else
-        userDetails[split_input[0]] = split_input[1];
-  	return new Promise(function(resolve){
+		userDetails[split_input[0]] = split_input[1];
+	return new Promise(function(resolve){	  
 		exec('git config --list', (error, stdout, stderr) => {
 			var array_stdout = stdout.split("\n");
 			for(var single_info of array_stdout){
@@ -54,12 +99,15 @@ async function getUserDetails(userDetails){
 				}
 			}
 
-			resolve();
+			resolve(userDetails);
 		});
   	});
 }
-
-
+/**
+ * Get all the workflows existing in repository
+ * @param  {Object} userDetails     The object that stored user's information 
+ * @return {Promise}				Resolves an array of all the workflow objects
+ */
 function getWorkflows(userDetails){
     var opts = {
         url: 'https://api.github.com/repos/'+userDetails['username']+'/'+userDetails['repo_name']+'/actions/workflows',
@@ -76,6 +124,11 @@ function getWorkflows(userDetails){
         });
     });
 }
+/**
+ * Get the workflows created by us
+ * @param  {Array} allWorkflowsInRepo       Array consisting of all the workflows in the repository
+ * @return {Object}				            Workflow Object that was created by us
+ */
 function getMyWorkflow(allWorkflowsInRepo){
     var myWorkflow;
     for(var workflow of allWorkflowsInRepo){
@@ -85,6 +138,12 @@ function getMyWorkflow(allWorkflowsInRepo){
     }
     return myWorkflow;
 }
+/**
+ * Get URL of our workflow run
+ * @param  {Object} userDetails     The object that stored user's information
+ * @param  {Object} myWorkflow      Workflow Object that was created by us
+ * @return {Promise}				Resolves the URL of our workflow run
+ */
 function getURLOfMyWorkflowRun(userDetails, myWorkflow){
     var opts = {
         url: 'https://api.github.com/repos/'+userDetails['username']+'/'+userDetails['repo_name']+'/actions/workflows/'+myWorkflow['id']+'/runs',
@@ -104,8 +163,9 @@ function getURLOfMyWorkflowRun(userDetails, myWorkflow){
 
 
 (async function(){
-    var userDetails = {};
-    await getUserDetails(userDetails);
+    original_content = await getFileContent('give_inputs.txt');
+	original_content = original_content.join('\n');
+    var userDetails = await getUserDetails('give_inputs.txt', original_content);
     var allWorkflowsInRepo = await getWorkflows(userDetails);
     var myWorkflow = getMyWorkflow(allWorkflowsInRepo);
     var urlOfMyWorkflowRun = await getURLOfMyWorkflowRun(userDetails, myWorkflow);
