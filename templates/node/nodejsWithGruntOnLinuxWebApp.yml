@@ -5,7 +5,7 @@
 on:
   push:
     branches:
-      - {{{ sourceRepository.branch }}}
+      - master
 
 name: Build and deploy Node app
 
@@ -19,7 +19,7 @@ jobs:
     # login using publishing credentials
     - uses: azure/login@v1
       with:
-        creds: {{=<% %>=}}${{ secrets.<% targetResource.serviceConnectionId %> }}<%={{ }}=%>
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - uses: actions/setup-node@v1
       with:
@@ -27,7 +27,7 @@ jobs:
 
     # install dependencies, build, and test
     - name: npm install, build
-      working-directory: {{{ workingDirectory }}}
+      working-directory: '.'
       run: |
         npm install
         grunt --gruntfile {{{repositoryAnalysisApplicationSettings.settings.nodeGruntFilePath}}}
