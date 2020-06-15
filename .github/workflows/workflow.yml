@@ -13,7 +13,7 @@ jobs:
     - name: 'Login via Azure CLI'
       uses: azure/login@v1.1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: $
 
     - name: Setup Node 10.x
       uses: actions/setup-node@v1
