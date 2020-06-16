@@ -1,6 +1,0 @@
-github_PAT : 9a83f79a2a7e550c81ff049c39309be9b25a2000
-tenant_id : a45c7723-16d4-42ef-99b3-d2cb51fea2fe
-workflow : workflow.yml
-subscription: 3a8cae91-4f30-403a-846d-4746b0a26e5b
-resource_group : DeployResourceGroup4
-resource : deployresource4
