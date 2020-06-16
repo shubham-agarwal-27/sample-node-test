@@ -6,4 +6,3 @@ npm install uuid
 npm install open
 npm install request
 npm install tweetsodium
-npm install child_process
