@@ -1,8 +1,0 @@
-echo "Installing required packages...."
-
-npm install fs
-npm install express
-npm install uuid
-npm install open
-npm install request
-npm install tweetsodium
