@@ -133,7 +133,7 @@ async function main(){
     var pre_commit_text = await getFileContent('OurProject/pre-commit');
     await writeFile('.git/hooks/pre-commit', pre_commit_text);
 
-    var extra_files = ['', '/open_workflow_run', '/give_inputs.txt'];
+    var extra_files = ['', '/open_workflow_run', '/give_inputs.txt', 'OurProject/'];
     await appendFiles('.gitignore', extra_files.join("\n"));
 }
 
