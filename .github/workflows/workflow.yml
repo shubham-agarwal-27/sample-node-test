@@ -13,7 +13,7 @@ jobs:
     - name: 'Login via Azure CLI'
       uses: azure/login@v1.1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.SPN_CREDENTIALS_GIT_HOOKS_DTA }}
 
     - name: Setup Node 10.x
       uses: actions/setup-node@v1
@@ -28,4 +28,4 @@ jobs:
     - name: 'Run Azure webapp deploy action using Service Principal'
       uses: azure/webapps-deploy@v2
       with: 
-        app-name: ResourceForDemo
+        app-name: deployresourceDemo
