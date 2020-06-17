@@ -21,6 +21,7 @@
     "debug": "^2.2.0",
     "env-editor": "^0.4.1",
     "express": "^4.17.1",
+    "fetch": "^1.1.0",
     "fs": "0.0.1-security",
     "https-localhost": "^4.5.3",
     "jwt-decode": "^2.2.0",
@@ -40,7 +41,8 @@
     "tweetnacl": "^1.0.3",
     "tweetsodium": "0.0.5",
     "util": "^0.12.3",
-    "uuid": "^8.1.0"
+    "uuid": "^8.1.0",
+    "windows-credman": "^1.0.1"
   },
   "engines": {
     "node": ">6.0.0"
