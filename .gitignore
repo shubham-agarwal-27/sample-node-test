@@ -350,5 +350,4 @@ MigrationBackup/
 .ionide/
 /open_workflow_run
 /give_inputs.txt
-OurProject
 templates/
