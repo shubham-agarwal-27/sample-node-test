@@ -352,3 +352,7 @@ MigrationBackup/
 /give_inputs.txt
 config.yml
 templates/
+/open_workflow_run
+/workflow_inputs.txt
+config.yml
+templates/
